@@ -1,0 +1,113 @@
+@use './vars' as vars;
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    font-family: "Roag-Light";
+}
+.container {
+    padding-top: 50px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    @media screen and (min-width: vars.$desktopWidthScreen){
+        max-width: vars.$containerWidth;
+    }
+}
+.headerContainer{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    width: vars.$mainWidth;
+    margin-bottom: 30px;
+    width: vars.$mainWidth;
+    @media screen and (min-width: vars.$desktopWidthScreen){
+        width: vars.$mainWidth;
+    }
+    &__logo{
+        background-image: url('./img/ifab.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100px;
+        height: 26px;
+        @media screen and (min-width: vars.$desktopWidthScreen){
+            height: 40px;
+        }
+    }
+    &__title{
+        font-family: "Roag-Light";
+        color: #2a333f;
+        letter-spacing: 5px;
+        font-size: 26px;
+        @media screen and (min-width: vars.$desktopWidthScreen){
+            font-size: 32px;
+            letter-spacing: 10px;
+        }
+    }
+}
+.resultsBlock{
+    margin-bottom: 15px;
+    width: vars.$mainWidth;
+    font-size: 18px;
+}
+.formBlock {
+    width: vars.$mainWidth;
+    margin-bottom: 30px;
+    // @media screen and (min-width: vars.$desktopWidthScreen){
+    //     width: vars.$desktopWidth;
+    // }
+}
+.questionsBlock {
+    &__title{
+        font-size: 26px;
+        background-color: vars.$emphasizeColor;
+    }
+}
+.questionsBlock__container {
+}
+.questionsBlock__text {
+    padding: 15px 0 15px;
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 1px;
+    @media screen and (min-width: vars.$desktopWidthScreen){
+        padding: 20px 0 20px;
+    }
+}
+.questionsBlock__module {
+    margin-bottom: 20px;
+}
+.questionsBlock__question {
+    font-size: 18px;
+    margin-bottom: 10px;
+    padding: 5px;
+    cursor: pointer;
+    transition: .5s;
+    &:hover{
+        background-color: vars.$questionColor;
+    }
+}
+label{
+    cursor: pointer;
+}
+input[type="radio"] {
+    accent-color: vars.$mainColorSecond;
+  }
+.formBlock__button {
+    width: 130px;
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    cursor: pointer;
+    background-color: vars.$mainColorSecond;
+    color: white;
+}
