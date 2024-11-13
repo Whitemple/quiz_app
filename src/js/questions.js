@@ -1,22 +1,22 @@
-const myQuestions = [
+export const ifabQuestions = [
     {
         id: 1,
-        question: 'What is the capital of France?', 
+        question: 'Игрок (не вратарь) получил травму во время серии пенальти и не может продолжить игру. Его команда не использовала максимальное количество замен. Какова правильная процедура?', 
         answers: [ 
             { 
-                text: 'Paris', 
+                text: 'Игрок может покинуть поле, но не может быть заменен. Команда соперников должна убрать одного игрока (уравнять количество) и сообщить об этом судье', 
                 correct: true 
             }, 
             { 
-                text: 'London', 
+                text: 'Игрок не может покинуть поле, но не может быть заменен. Команда соперников должна убрать одного игрока (уравнять количество) и сообщить об этом судье', 
                 correct: false 
             }, 
             {
-                text: 'Berlin', 
+                text: 'Игрок может покинуть поле, и может быть заменен. Команда соперников должна убрать одного игрока (уравнять количество) и сообщить об этом судье', 
                 correct: false 
             }, 
             { 
-                text: 'Madrid', 
+                text: 'Игрок не может покинуть поле, и не может быть заменен. Команда соперников должна убрать одного игрока (уравнять количество) и сообщить об этом судье', 
                 correct: false 
             } 
         ] 
@@ -24,6 +24,50 @@ const myQuestions = [
     {
         id: 2,
         question: 'Who invented JavaScript?', 
+        answers: [ 
+            { 
+                text: 'Douglas Crockford', 
+                correct: false 
+            }, 
+            { 
+                text: 'Sheryl Sandberg', 
+                correct: false 
+            }, 
+            {
+                text: 'Brendan Eich', 
+                correct: true 
+            }, 
+            { 
+                text: 'Sandberg Crockford', 
+                correct: false 
+            } 
+        ] 
+    },
+    {
+        id: 3,
+        question: 'Who ?', 
+        answers: [ 
+            { 
+                text: ' Crockford', 
+                correct: false 
+            }, 
+            { 
+                text: 'Sheryl ', 
+                correct: false 
+            }, 
+            {
+                text: ' Eich', 
+                correct: true 
+            }, 
+            { 
+                text: 'Sandberg ', 
+                correct: false 
+            } 
+        ] 
+    },
+    {
+        id: 4,
+        question: ' invented ?', 
         answers: [ 
             { 
                 text: 'Douglas Crockford', 

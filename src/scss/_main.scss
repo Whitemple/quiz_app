@@ -54,9 +54,14 @@
     }
 }
 .resultsBlock{
-    margin-bottom: 15px;
-    width: vars.$mainWidth;
-    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__score{
+        margin-bottom: 15px;
+        // width: vars.$mainWidth;
+        font-size: 18px;
+    }
 }
 .formBlock {
     width: vars.$mainWidth;
@@ -66,12 +71,28 @@
     // }
 }
 .questionsBlock {
+    margin-bottom: 20px;
     &__title{
         font-size: 26px;
         background-color: vars.$emphasizeColor;
     }
+
 }
+.info{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    &__mainText{
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+}
+
+
 .questionsBlock__container {
+    margin-bottom: 30px;
 }
 .questionsBlock__text {
     padding: 15px 0 15px;
@@ -92,17 +113,27 @@
     padding: 5px;
     cursor: pointer;
     transition: .5s;
-    &:hover{
-        background-color: vars.$questionColor;
-    }
+    // &:hover{
+    //     background-color: vars.$questionColor;
+    // }
 }
 label{
     cursor: pointer;
 }
 input[type="radio"] {
     accent-color: vars.$mainColorSecond;
-  }
-.formBlock__button {
+}
+// .checkedAnswer{
+//     background-color: vars.$questionColor;
+// }
+.wrongAnswer{
+    background-color: #ff5a5a;
+}
+.correctAnswer{
+    background-color: #4bcd4b;
+}
+
+.button {
     width: 130px;
     height: 35px;
     border-radius: 5px;
@@ -110,4 +141,10 @@ input[type="radio"] {
     cursor: pointer;
     background-color: vars.$mainColorSecond;
     color: white;
+}
+.hideElement{
+    display: none;
+}
+.showElement{
+    display:block;
 }
