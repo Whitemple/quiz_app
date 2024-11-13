@@ -112,10 +112,7 @@
     margin-bottom: 10px;
     padding: 5px;
     cursor: pointer;
-    transition: .5s;
-    // &:hover{
-    //     background-color: vars.$questionColor;
-    // }
+    line-height: 1.1;
 }
 label{
     cursor: pointer;
@@ -141,6 +138,7 @@ input[type="radio"] {
     cursor: pointer;
     background-color: vars.$mainColorSecond;
     color: white;
+    user-select: none;
 }
 .hideElement{
     display: none;

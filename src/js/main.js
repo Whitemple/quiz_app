@@ -10,20 +10,23 @@ const showQuizAnswersButton = document.querySelector('.showQuizAnswersButton');
 const resultsBlock__score = document.querySelector('.resultsBlock__score');
 
 // Переменные для хранения временной информации
-let userShowedQuestions = [];
-let exludeQuestions = [];
+const userShowedQuestions = [];
+const exludeQuestions = [];
 let countClick = 0;
 let score = 0;
+let flag = true;
+const maxQuestions = 5;
 
 
 startQuizButton.forEach(button => button.addEventListener('click', e => {
         e.preventDefault();
 
         // Сброс всех ранее созданных параметров
-        userShowedQuestions = [];
-        exludeQuestions = [];
+        userShowedQuestions.length = 0;
+        exludeQuestions.length = 0;
         countClick = 0;
         score = 0;
+        flag = true;
 
         // показываем блок вопросов
         toggleBlocks(formBlock, 'hideElement', 'showElement');
@@ -36,22 +39,30 @@ startQuizButton.forEach(button => button.addEventListener('click', e => {
     })
 );
 
+
 formBlock__button.addEventListener('click', e => {
     e.preventDefault();
-    
-    checkAnswers();
-    questionsBlock.innerHTML='';
-    if(countClick < 2){
-        countClick++
-        questionsBlock.append(createQuestionBlock(ifabQuestions));
+    if(document.querySelector('input[name="responseOption"]:checked')){
+        checkAnswers();
+        questionsBlock.innerHTML='';
+        if(countClick < maxQuestions){
+            countClick++
+            questionsBlock.append(createQuestionBlock(ifabQuestions));
+        }
+        else {
+            // меняем флаг на false для избежания ошибок при показе результатов
+            flag = false;
+            // скрываем блок вопросов
+            toggleBlocks(formBlock, 'showElement', 'hideElement');
+            // показываем результаты
+            resultsBlock__score.innerText = `Ваш результат: ${score}/${maxQuestions}`;
+            toggleBlocks(resultsBlock, 'hideElement', 'showElement');
+        }
     }
     else {
-        // скрываем блок вопросов
-        toggleBlocks(formBlock, 'showElement', 'hideElement');
-        // показываем результаты
-        resultsBlock__score.innerText = `Ваш результат: ${score}/2`;
-        toggleBlocks(resultsBlock, 'hideElement', 'showElement');
+        return
     }
+    
 });
 
 showQuizAnswersButton.addEventListener('click', e => {
@@ -82,7 +93,7 @@ function checkAnswers(){
     const answersArray = document.querySelectorAll('input[name="responseOption"]');
     answersArray.forEach(element => element.disabled = true);
 
-    if(choosedAnswer.classList.contains("correctAnswer")) score++
+    if(choosedAnswer.classList.contains("correctAnswer") && flag) score++
 
     // Добавляем элемент с выбранными классами в массив
     const questionBlock = document.querySelector('.questionsBlock__container');
@@ -100,13 +111,17 @@ function randomIntegerWithException(min, max, exeption) {
     }
 };
 
+
+
+
+
 function createQuestionBlock(ifabQuestions){
     const questionNumber = randomIntegerWithException(0, ifabQuestions.length-1, exludeQuestions);
     const element = document.createElement('div');
     element.classList.add('questionsBlock__container');
     element.setAttribute('id', `${ifabQuestions[questionNumber].id}`);
     element.innerHTML = `
-        <h2 class="questionsBlock__title">Вопрос № ${countClick} (IFAB № ${ifabQuestions[questionNumber].id})</h2>
+        <h2 class="questionsBlock__title">Вопрос № ${countClick} / ${maxQuestions} (IFAB № ${ifabQuestions[questionNumber].id})</h2>
         <p class="questionsBlock__text">${ifabQuestions[questionNumber].question}</p>
         ${createAnswersBlock(ifabQuestions[questionNumber].answers)}
     `;
@@ -114,10 +129,27 @@ function createQuestionBlock(ifabQuestions){
     return element;
 };
 
+// Перемешиваем блок ответов, чтобы каждый раз менялась их очередность показа
+function shuffleArray(array){
+    const shuffledArray = array
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
+    return shuffledArray;
+}
+
 function createAnswersBlock(answersArray){
     const questionsBlock__module = document.createElement('div');
     questionsBlock__module.classList.add('questionsBlock__module');
-    answersArray.forEach((answer, index) => {
+
+    
+    // let shuffledAnswersArray = answersArray
+    // .map(value => ({ value, sort: Math.random() }))
+    // .sort((a, b) => a.sort - b.sort)
+    // .map(({ value }) => value)
+
+
+    shuffleArray(answersArray).forEach((answer, index) => {
         questionsBlock__module.innerHTML += `
             <div class="questionsBlock__question">
                 <input type="radio" id="contactChoice_${index}" name="responseOption" value="${answer.correct}" />
