@@ -9,19 +9,48 @@ const resultsBlock = document.querySelector('.resultsBlock');
 const showQuizAnswersButton = document.querySelector('.showQuizAnswersButton');
 const resultsBlock__score = document.querySelector('.resultsBlock__score');
 const startLearnButton = document.querySelectorAll('.startLearnButton');
+const exitButton = document.querySelector('.exitButton');
+const cleanHistoryButton = document.querySelector('.cleanHistoryButton');
+
+
+
+// cookie
+// document.cookie = 'lastQuestion=2'
+function getCookie() {
+    if(document.cookie.indexOf("lastQuestion") == 0){
+        return Number(document.cookie.split('=')[1])
+    }
+    else{
+        return 0;
+    }
+}
+// const lastQuestion = getCookie();
+
 
 
 // Переменные для хранения временной информации
 const userShowedQuestions = [];
 const exludeQuestions = [];
-let countClick = 0;
+
 let score = 0;
 let flag = true;
 let isLearnButtonClicked = false;
 let answersArray = null;
+
+// const lastQuestion = localStorage.getItem('lastQuestion');
+// let startLearnElement = lastQuestion !== null ? lastQuestion-1 : 0;
+let startLearnElement = getCookie() ? getCookie()-1 : 0;
+console.log('startLearnElement', startLearnElement);
+let countClick = getCookie() ? getCookie() : 0;
+console.log('countClick', countClick);
+
+const minimalPassedBall = 3;
 const maxQuestions = 5;
 const totalCountQuestions = ifabQuestions.length;
 
+exitButton.addEventListener('click', () => document.cookie = `lastQuestion=${startLearnElement};max-age=604800`);
+
+cleanHistoryButton.addEventListener('click', () => document.cookie = 'lastQuestion=; max-age=-99999999;');
 
 startLearnButton.forEach(button => button.addEventListener('click', e => {
         e.preventDefault();
@@ -29,7 +58,9 @@ startLearnButton.forEach(button => button.addEventListener('click', e => {
         // Сброс всех ранее созданных параметров
         userShowedQuestions.length = 0;
         exludeQuestions.length = 0;
-        countClick = 0;
+        countClick = getCookie() ? getCookie() : 1;
+        console.log('startLearnButton', getCookie());
+        startLearnElement = getCookie() ? getCookie()-1 : 0;
         score = 0;
         flag = true;
 
@@ -38,8 +69,10 @@ startLearnButton.forEach(button => button.addEventListener('click', e => {
         // скрываем начальное приветствие и старт тесты
         toggleBlocks(info, 'showElementFlex', 'hideElement');
         // скрываем результаты
-        toggleBlocks(resultsBlock, 'showElement', 'hideElement');
-        countClick++;
+        toggleBlocks(resultsBlock, 'showElementFlex', 'hideElement');
+        // показываем кнопку выхода на стартовый экран
+        toggleBlocks(exitButton, 'hideElement', 'showElement');
+        countClick = getCookie() ? getCookie() : countClick++;
         questionsBlock.append(createQuestionBlock(ifabQuestions, totalCountQuestions, isLearnButtonClicked));
 
         immediatelyShowAnswers();
@@ -54,7 +87,7 @@ startQuizButton.forEach(button => button.addEventListener('click', e => {
         // Сброс всех ранее созданных параметров
         userShowedQuestions.length = 0;
         exludeQuestions.length = 0;
-        countClick = 0;
+        countClick = 1;
         score = 0;
         flag = true;
 
@@ -63,8 +96,8 @@ startQuizButton.forEach(button => button.addEventListener('click', e => {
         // скрываем начальное приветствие и старт тесты
         toggleBlocks(info, 'showElementFlex', 'hideElement');
         // скрываем результаты
-        toggleBlocks(resultsBlock, 'showElement', 'hideElement');
-        countClick++;
+        toggleBlocks(resultsBlock, 'showElementFlex', 'hideElement');
+        // countClick = lastQuestion ? lastQuestion : countClick++;
         questionsBlock.append(createQuestionBlock(ifabQuestions, maxQuestions, isLearnButtonClicked));
     })
 );
@@ -92,10 +125,16 @@ function startQuiz(e, totalCount, isLearn){
             if(isLearn){
                 // показываем начальное приветствие и старт тесты
                 toggleBlocks(info, 'hideElement', 'showElementFlex');
+                // document.cookie = 'lastQuestion=0';
+                document.cookie = 'lastQuestion=; max-age=-99999999;';
+                console.log(document.cookie);
             } else{
                     // показываем результаты
-                    resultsBlock__score.innerText = `Ваш результат: ${score}/${totalCount}`;
-                    toggleBlocks(resultsBlock, 'hideElement', 'showElement');
+                    resultsBlock__score.innerText = `
+                    ${isQuizPassed(score, minimalPassedBall) ? 'Поздравляем! Вы прошли тест по Правилам Игры' : 'К сожалению, Вы не прошли тест по Правилам Игры. Попробуйте снова.'}
+                    Минимальный проходной балл ${minimalPassedBall}. Ваш результат: ${score} / ${totalCount}
+                    `;
+                    toggleBlocks(resultsBlock, 'hideElement', 'showElementFlex');
             }
         }
     }
@@ -103,6 +142,10 @@ function startQuiz(e, totalCount, isLearn){
         return
     }
 };
+
+function isQuizPassed(score, minimalPassedBall){
+    return score>=minimalPassedBall ? true : false;
+}
 
 function showLearningAnswer(stringElement, isListener){
     const answersArray = document.querySelectorAll(stringElement);
@@ -130,7 +173,7 @@ formBlock__button.addEventListener('click', (e) =>{
 showQuizAnswersButton.addEventListener('click', e => {
     e.preventDefault();
     // скрываем результаты
-    toggleBlocks(resultsBlock, 'showElement', 'hideElement');
+    toggleBlocks(resultsBlock, 'showElementFlex', 'hideElement');
     questionsBlock.innerHTML = '';
     // показываем блок ответов
     toggleBlocks(formBlock, 'hideElement', 'showElement');
@@ -187,18 +230,22 @@ function randomIntegerWithException(min, max, exeption) {
 
 
 function createQuestionBlock(arrayQuestions, totalCount, isLearn){
-    const questionNumber = randomIntegerWithException(0, arrayQuestions.length-1, isLearn ? [] : exludeQuestions);
+    
+    let questionNumber = isLearn ?
+                        startLearnElement :
+                        randomIntegerWithException(0, arrayQuestions.length-1, isLearn ? [] : exludeQuestions);
     // const questionNumber = randomIntegerWithException(0, arrayQuestions.length-1, exludeQuestions);
     const element = document.createElement('div');
     element.classList.add('questionsBlock__container');
     element.setAttribute('id', `${arrayQuestions[questionNumber].id}`);
     element.innerHTML = `
-        <h2 class="questionsBlock__title">Вопрос № ${countClick} / ${totalCount} (IFAB № ${arrayQuestions[questionNumber].id})</h2>
+        <h2 class="questionsBlock__title">Вопрос № ${countClick} / ${totalCount}
+        ${isLearn ? '' : `(IFAB № ${arrayQuestions[questionNumber].id})`}</h2>
         <p class="questionsBlock__text">${arrayQuestions[questionNumber].question}</p>
         ${createAnswersBlock(arrayQuestions[questionNumber].answers)}
     `;
-    isLearn ? exludeQuestions.length = 0 : exludeQuestions.push(questionNumber);
-    console.log(exludeQuestions, isLearn);
+    // isLearn ? exludeQuestions.length = 0 : exludeQuestions.push(questionNumber);
+    isLearn ? startLearnElement++ : exludeQuestions.push(questionNumber);
     // exludeQuestions.push(questionNumber);
     return element;
 };
