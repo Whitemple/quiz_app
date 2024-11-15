@@ -73,7 +73,7 @@
     &__buttonsContainer{
         display: flex;
         flex-direction: column;
-        @media screen and (min-width: 421px){
+        @media screen and (min-width: vars.$mobileWidthScreen){
             flex-direction: row;
             justify-content: space-between;
         }
@@ -97,7 +97,7 @@
     &__mainText{
         font-size: 18px;
         margin-bottom: 15px;
-        width: vars.$mainWidth;
+        width: vars.$containerWidth;
         line-height: 1.2;
     }
     &__additionalText{
@@ -166,8 +166,8 @@ input[type="radio"] {
     @media screen and (min-width: vars.$desktopWidthScreen){
         font-size: 16px;
     }
-    @media screen and (min-width: 421px){
-        width: 180px;
+    @media screen and (min-width: vars.$mobileWidthScreen){
+        width: 200px;
     }
 }
 .oficialLink, .oficialLink:visited, .oficialLink:link{
