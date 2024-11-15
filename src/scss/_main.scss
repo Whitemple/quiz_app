@@ -26,9 +26,8 @@
     display: flex;
     justify-content:space-between;
     align-items: center;
-    width: vars.$mainWidth;
+    width: vars.$containerWidth;
     margin-bottom: 30px;
-    width: vars.$mainWidth;
     @media screen and (min-width: vars.$desktopWidthScreen){
         width: vars.$mainWidth;
     }
@@ -37,16 +36,17 @@
         background-repeat: no-repeat;
         background-size: contain;
         width: 100px;
-        height: 26px;
+        height: 20px;
         @media screen and (min-width: vars.$desktopWidthScreen){
             height: 40px;
+            height: 26px;
         }
     }
     &__title{
         font-family: "Roag-Light";
         color: #2a333f;
-        letter-spacing: 5px;
-        font-size: 26px;
+        letter-spacing: 2px;
+        font-size: 20px;
         @media screen and (min-width: vars.$desktopWidthScreen){
             font-size: 32px;
             letter-spacing: 10px;
@@ -57,6 +57,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 90%;
     &__score{
         margin-bottom: 15px;
         // width: vars.$mainWidth;
@@ -64,11 +65,19 @@
     }
 }
 .formBlock {
-    width: vars.$mainWidth;
+    width: vars.$containerWidth;
     margin-bottom: 30px;
-    // @media screen and (min-width: vars.$desktopWidthScreen){
-    //     width: vars.$desktopWidth;
-    // }
+    @media screen and (min-width: vars.$desktopWidthScreen){
+        width: vars.$mainWidth;
+    }
+    &__buttonsContainer{
+        display: flex;
+        flex-direction: column;
+        @media screen and (min-width: 421px){
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
 }
 .questionsBlock {
     margin-bottom: 20px;
@@ -84,9 +93,19 @@
     align-content: center;
     justify-content: center;
     align-items: center;
+    width: vars.$containerWidth;
     &__mainText{
-        font-size: 20px;
+        font-size: 18px;
         margin-bottom: 15px;
+        width: vars.$mainWidth;
+        line-height: 1.2;
+    }
+    &__additionalText{
+        font-style: italic;
+        font-size: 16px;
+    }
+    @media screen and (min-width: vars.$desktopWidthScreen){
+        width: 100%;
     }
 }
 
@@ -131,18 +150,46 @@ input[type="radio"] {
 }
 
 .button {
-    width: 130px;
-    height: 35px;
+    width: 100%;
+    font-size: 18px;
+    height: 40px;
     border-radius: 5px;
     border: 1px solid gray;
     cursor: pointer;
     background-color: vars.$mainColorSecond;
     color: white;
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    @media screen and (min-width: vars.$desktopWidthScreen){
+        font-size: 16px;
+    }
+    @media screen and (min-width: 421px){
+        width: 180px;
+    }
 }
+.oficialLink, .oficialLink:visited, .oficialLink:link{
+    text-decoration: underline;
+    font-weight: 700;
+    color: #000;
+}
+.highlightingText{
+    color: vars.$mainColorSecond;
+}
+ol{
+    list-style: inside;
+    margin-bottom: 10px;
+}
+
+
 .hideElement{
     display: none;
 }
 .showElement{
     display:block;
+}
+.showElementFlex{
+    display:flex;
 }
