@@ -40,7 +40,7 @@ let countClick = getCookie() ? getCookie() : 0;
 
 // значения минимального проходного балла, максимального кол-ва вопросов в тесте и общее число вопросов для показа в learning mod
 const minimalPassedBall = 3;
-const maxQuestions = 5;
+const maxQuestions = 10;
 const totalCountQuestions = ifabQuestions.length;
 
 exitButton.addEventListener('click', () => document.cookie = `lastQuestion=${startLearnElement};max-age=604800`);
