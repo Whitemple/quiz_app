@@ -1,4 +1,7 @@
+// импорт массива вопросов ИФАБ
 import {ifabQuestions} from './questions.js' ;
+
+import {randomIntegerWithException, shuffleArray, toggleBlocks, isQuizPassed} from './modules.js';
 
 // переменные для работы
 const questionsBlock = document.querySelector('.questionsBlock');
@@ -46,6 +49,7 @@ const totalCountQuestions = ifabQuestions.length;
 exitButton.addEventListener('click', () => document.cookie = `lastQuestion=${startLearnElement};max-age=604800`);
 cleanHistoryButton.addEventListener('click', () => document.cookie = 'lastQuestion=; max-age=-99999999;');
 
+// запуск процесса изучения вопросов
 startLearnButton.forEach(button => button.addEventListener('click', e => {
         e.preventDefault();
         isLearnButtonClicked = true;
@@ -73,6 +77,7 @@ startLearnButton.forEach(button => button.addEventListener('click', e => {
     })
 )
 
+// кнпока запускает мож "Тест"
 startQuizButton.forEach(button => button.addEventListener('click', e => {
         e.preventDefault();
 
@@ -94,6 +99,7 @@ startQuizButton.forEach(button => button.addEventListener('click', e => {
     })
 );
 
+// запускае отрисовки элементов и логики блока вопросов и ответов
 function startQuiz(e, totalCount, isLearn){
     e.preventDefault();
    
@@ -130,10 +136,7 @@ function startQuiz(e, totalCount, isLearn){
     }
 };
 
-function isQuizPassed(score, minimalPassedBall){
-    return score>=minimalPassedBall ? true : false;
-};
-
+// логика работы кнопки "Далее"
 formBlock__button.addEventListener('click', (e) =>{
     if(isLearnButtonClicked){
         answersArray = document.querySelectorAll('input[name="responseOption"]');
@@ -145,6 +148,7 @@ formBlock__button.addEventListener('click', (e) =>{
     
 });
 
+// кнопка клика по запуску теста
 showQuizAnswersButton.addEventListener('click', e => {
     e.preventDefault();
     // скрываем результаты
@@ -157,11 +161,16 @@ showQuizAnswersButton.addEventListener('click', e => {
     });
 });
 
-function toggleBlocks(element, removeClass, addClass){
-    element.classList.remove(removeClass);
-    element.classList.add(addClass); 
-};
+// function toggleBlocks(element, removeClass, addClass){
+//     element.classList.remove(removeClass);
+//     element.classList.add(addClass); 
+// };
 
+// function isQuizPassed(score, minimalPassedBall){
+//     return score>=minimalPassedBall ? true : false;
+// };
+
+// функция по моментальному показу правильного/ошибочного ответа в режиме isLearn
 function immediatelyShowAnswers(){
     answersArray = document.querySelectorAll('input[name="responseOption"]');
     answersArray.forEach(answer => answer.addEventListener('change', () => checkAnswers(isLearnButtonClicked) ) );
@@ -186,16 +195,17 @@ function checkAnswers(isLearn){
     
 };
 
-// функция по случайному показу вопросов
-function randomIntegerWithException(min, max, exeption) {
-    let number
-        exeption = Array.isArray(exeption) ? exeption : [(isNaN(exeption) ? min-1 : exeption)];
-    while(true){
-        number = Math.floor(Math.random() * (max - min + 1)) + min;
-        if(exeption.indexOf(number) < 0) return number;
-    }
-};
+// // функция по случайному показу вопросов
+// function randomIntegerWithException(min, max, exeption) {
+//     let number
+//         exeption = Array.isArray(exeption) ? exeption : [(isNaN(exeption) ? min-1 : exeption)];
+//     while(true){
+//         number = Math.floor(Math.random() * (max - min + 1)) + min;
+//         if(exeption.indexOf(number) < 0) return number;
+//     }
+// };
 
+// создаем блок вопроса и возвращаем html-элемент
 function createQuestionBlock(arrayQuestions, totalCount, isLearn){
     let questionNumber = isLearn ?
                         startLearnElement :
@@ -213,15 +223,16 @@ function createQuestionBlock(arrayQuestions, totalCount, isLearn){
     return element;
 };
 
-// Перемешиваем блок ответов, чтобы каждый раз менялась их очередность показа
-function shuffleArray(array){
-    const shuffledArray = array
-        .map(value => ({ value, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
-    return shuffledArray;
-}
+// // Перемешиваем блок ответов, чтобы каждый раз менялась их очередность показа
+// function shuffleArray(array){
+//     const shuffledArray = array
+//         .map(value => ({ value, sort: Math.random() }))
+//         .sort((a, b) => a.sort - b.sort)
+//         .map(({ value }) => value);
+//     return shuffledArray;
+// };
 
+// создаем блок ответов и возвращаем html-элемент
 function createAnswersBlock(answersArray){
     const questionsBlock__module = document.createElement('div');
     questionsBlock__module.classList.add('questionsBlock__module');
@@ -236,3 +247,16 @@ function createAnswersBlock(answersArray){
     });
     return questionsBlock__module.innerHTML;
 };
+
+
+
+let time = 10; // Начинаем с 10
+const timer = setInterval(() => {
+  const countdownElement = document.getElementById('countdown'); // Наблюдаем за полосой прогресса
+  if(time >= 0) {
+    countdownElement.value = time--; // Заполняем полосу прогресса
+  } else {
+    clearInterval(timer); // Полностью останавливаем таймер
+    countdownElement.textContent = 'Отсчёт завершён!'; // Сообщение о завершении
+  }
+}, 1000);

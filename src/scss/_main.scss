@@ -28,6 +28,7 @@
     align-items: center;
     width: vars.$containerWidth;
     margin-bottom: 30px;
+    background-color: vars.$emphasizeColor;
     @media screen and (min-width: vars.$desktopWidthScreen){
         width: vars.$mainWidth;
     }
