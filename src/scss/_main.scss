@@ -82,12 +82,61 @@
 }
 .questionsBlock {
     margin-bottom: 20px;
-    &__title{
-        font-size: 26px;
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 3px 0;
         background-color: vars.$emphasizeColor;
     }
-
+    &__title{
+        font-size: 26px;
+        
+    }
+    &__favoritsBtn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        width: 24px;
+        height: 24px;
+        background-color: transparent;
+        background-size: contain;
+        cursor: pointer;
+    }
+    &__container {
+        margin-bottom: 30px;
+    }
+    &__text {
+        padding: 15px 0 15px;
+        font-size: 20px;
+        font-weight: 700;
+        font-style: italic;
+        letter-spacing: 1px;
+        @media screen and (min-width: vars.$desktopWidthScreen){
+            padding: 20px 0 20px;
+        }
+    }
+    &__module {
+        margin-bottom: 20px;
+    }
+    &__question {
+        font-size: 18px;
+        margin-bottom: 10px;
+        padding: 5px;
+        cursor: pointer;
+        line-height: 1.1;
+    }
 }
+
+.favoriteCheckedImg{
+    background-image: url('./img/favoriteChecked.png');
+}
+.favoriteUnCheckedImg{
+    background-image: url('./img/favoriteUnChecked.png');
+}
+
+
 .info{
     display: flex;
     flex-direction: column;
@@ -113,29 +162,29 @@
 }
 
 
-.questionsBlock__container {
-    margin-bottom: 30px;
-}
-.questionsBlock__text {
-    padding: 15px 0 15px;
-    font-size: 20px;
-    font-weight: 700;
-    font-style: italic;
-    letter-spacing: 1px;
-    @media screen and (min-width: vars.$desktopWidthScreen){
-        padding: 20px 0 20px;
-    }
-}
-.questionsBlock__module {
-    margin-bottom: 20px;
-}
-.questionsBlock__question {
-    font-size: 18px;
-    margin-bottom: 10px;
-    padding: 5px;
-    cursor: pointer;
-    line-height: 1.1;
-}
+// .questionsBlock__container {
+//     margin-bottom: 30px;
+// }
+// .questionsBlock__text {
+//     padding: 15px 0 15px;
+//     font-size: 20px;
+//     font-weight: 700;
+//     font-style: italic;
+//     letter-spacing: 1px;
+//     @media screen and (min-width: vars.$desktopWidthScreen){
+//         padding: 20px 0 20px;
+//     }
+// }
+// .questionsBlock__module {
+//     margin-bottom: 20px;
+// }
+// .questionsBlock__question {
+//     font-size: 18px;
+//     margin-bottom: 10px;
+//     padding: 5px;
+//     cursor: pointer;
+//     line-height: 1.1;
+// }
 label{
     cursor: pointer;
 }

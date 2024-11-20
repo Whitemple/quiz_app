@@ -15,6 +15,10 @@ const resultsBlock__score = document.querySelector('.resultsBlock__score');
 const startLearnButton = document.querySelectorAll('.startLearnButton');
 const exitButton = document.querySelector('.exitButton');
 const cleanHistoryButton = document.querySelector('.cleanHistoryButton');
+const favoritsQuestionsButton = document.querySelector('.favoritsQuestionsButton');
+
+import favoriteUnCheckedImg from '../img/favoriteUnChecked.png';
+import favoriteCheckedImg from '../img/favoriteChecked.png'; 
 
 // функция проверки наличия coockie
 function getCookie() {
@@ -73,11 +77,26 @@ startLearnButton.forEach(button => button.addEventListener('click', e => {
         questionsBlock.append(createQuestionBlock(ifabQuestions, totalCountQuestions, isLearnButtonClicked));
 
         immediatelyShowAnswers();
+
+        // ниже код по добавлению вопросов в избранное
+        if(document.querySelector('.questionsBlock__favoritsBtn')) addToFavorites(document.querySelector('.questionsBlock__favoritsBtn'));
         
     })
-)
+);
 
-// кнпока запускает мож "Тест"
+favoritsQuestionsButton.addEventListener('click', () => {
+    // показываем блок вопросов
+    toggleBlocks(formBlock, 'hideElement', 'showElement');
+    // скрываем начальное приветствие и старт тесты
+    toggleBlocks(info, 'showElementFlex', 'hideElement');
+    // скрываем результаты
+    toggleBlocks(resultsBlock, 'showElementFlex', 'hideElement');
+    // показываем кнопку выхода на стартовый экран
+    toggleBlocks(exitButton, 'hideElement', 'showElement');
+    questionsBlock.append(createQuestionBlock(ifabQuestions, totalCountQuestions, isLearnButtonClicked));
+})
+
+// кнпока запускает мод "Тест"
 startQuizButton.forEach(button => button.addEventListener('click', e => {
         e.preventDefault();
 
@@ -141,7 +160,10 @@ formBlock__button.addEventListener('click', (e) =>{
     if(isLearnButtonClicked){
         answersArray = document.querySelectorAll('input[name="responseOption"]');
         answersArray.forEach(answer => answer.removeEventListener('change', () => checkAnswers(isLearnButtonClicked) ) );
-        startQuiz(e, totalCountQuestions, isLearnButtonClicked)
+        startQuiz(e, totalCountQuestions, isLearnButtonClicked);
+
+        // ниже код по добавлению вопросов в избранное
+        if(document.querySelector('.questionsBlock__favoritsBtn')) addToFavorites(document.querySelector('.questionsBlock__favoritsBtn'));
     } else{
         startQuiz(e, maxQuestions, isLearnButtonClicked)
     }
@@ -214,14 +236,21 @@ function createQuestionBlock(arrayQuestions, totalCount, isLearn){
     element.classList.add('questionsBlock__container');
     element.setAttribute('id', `${arrayQuestions[questionNumber].id}`);
     element.innerHTML = `
-        <h2 class="questionsBlock__title">Вопрос № ${countClick} / ${totalCount}
-        ${isLearn ? '' : `(IFAB № ${arrayQuestions[questionNumber].id})`}</h2>
+        <header class="questionsBlock__header">
+            <h2 class="questionsBlock__title">Вопрос № ${countClick} / ${totalCount}
+            ${isLearn ? '' : `(IFAB № ${arrayQuestions[questionNumber].id})`}</h2>
+            <button class="questionsBlock__favoritsBtn"><img src='${isFavorite(arrayQuestions[questionNumber].id) ? favoriteCheckedImg : favoriteUnCheckedImg}'
+                    data-question-id='${arrayQuestions[questionNumber].id}' alt='Избранное'>
+            </button>
+        </header>
+        
         <p class="questionsBlock__text">${arrayQuestions[questionNumber].question}</p>
         ${createAnswersBlock(arrayQuestions[questionNumber].answers)}
     `;
     isLearn ? startLearnElement++ : exludeQuestions.push(questionNumber);
     return element;
 };
+
 
 // // Перемешиваем блок ответов, чтобы каждый раз менялась их очередность показа
 // function shuffleArray(array){
@@ -250,13 +279,56 @@ function createAnswersBlock(answersArray){
 
 
 
-let time = 10; // Начинаем с 10
-const timer = setInterval(() => {
-  const countdownElement = document.getElementById('countdown'); // Наблюдаем за полосой прогресса
-  if(time >= 0) {
-    countdownElement.value = time--; // Заполняем полосу прогресса
-  } else {
-    clearInterval(timer); // Полностью останавливаем таймер
-    countdownElement.textContent = 'Отсчёт завершён!'; // Сообщение о завершении
-  }
-}, 1000);
+// TIMER CODE
+// let time = 10; // Начинаем с 10
+// const timer = setInterval(() => {
+//   const countdownElement = document.getElementById('countdown'); // Наблюдаем за полосой прогресса
+//   if(time >= 0) {
+//     countdownElement.value = time--; // Заполняем полосу прогресса
+//   } else {
+//     clearInterval(timer); // Полностью останавливаем таймер
+//     countdownElement.textContent = 'Отсчёт завершён!'; // Сообщение о завершении
+//   }
+// }, 1000);
+
+// функция записи истории в LocalStorage 
+function saveFavoritesQuestion(questionId){
+    if(localStorage.getItem('favorits') === null){
+        const favorits = [];
+        favorits.push(questionId)
+        localStorage.setItem('favorits', JSON.stringify(favorits));
+        
+    } else {
+        const favorits = JSON.parse(localStorage.getItem('favorits'));
+        if(!favorits.includes(questionId)){
+            favorits.push(questionId);
+            localStorage.setItem('favorits', JSON.stringify(favorits));
+        } else {
+            const newFavorites = favorits.filter((id) => id !== questionId);
+            localStorage.setItem('favorits', JSON.stringify(newFavorites));
+        }
+    }
+};
+
+
+// функция наличия вопроса в избранном
+function isFavorite(questionId){
+    if(localStorage.getItem('favorits') !== null){
+        const isExist = JSON.parse(localStorage.getItem('favorits')).includes(questionId.toString());
+        return isExist ? true : false;
+    }
+    else{
+        return false;
+    }
+};
+
+// функция сохранения id вопроса в LocalStorage
+function addToFavorites(elementId){
+    const btnArr = elementId;
+    btnArr.addEventListener('click', e => {
+            e.preventDefault();
+            const id = e.target.getAttribute('data-question-id');
+            isFavorite(id) ? e.target.src = favoriteUnCheckedImg : e.target.src = favoriteCheckedImg;
+            saveFavoritesQuestion(id);
+    })
+}
