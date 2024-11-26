@@ -250,13 +250,13 @@ function createAnswersBlock(answersArray){
 
 
 
-let time = 10; // Начинаем с 10
-const timer = setInterval(() => {
-  const countdownElement = document.getElementById('countdown'); // Наблюдаем за полосой прогресса
-  if(time >= 0) {
-    countdownElement.value = time--; // Заполняем полосу прогресса
-  } else {
-    clearInterval(timer); // Полностью останавливаем таймер
-    countdownElement.textContent = 'Отсчёт завершён!'; // Сообщение о завершении
-  }
-}, 1000);
+// let time = 10; // Начинаем с 10
+// const timer = setInterval(() => {
+//   const countdownElement = document.getElementById('countdown'); // Наблюдаем за полосой прогресса
+//   if(time >= 0) {
+//     countdownElement.value = time--; // Заполняем полосу прогресса
+//   } else {
+//     clearInterval(timer); // Полностью останавливаем таймер
+//     countdownElement.textContent = 'Отсчёт завершён!'; // Сообщение о завершении
+//   }
+// }, 1000);
